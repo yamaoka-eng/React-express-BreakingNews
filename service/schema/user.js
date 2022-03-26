@@ -7,16 +7,65 @@ import joi from 'joi' // 导入定义验证规则的包
  * max(length) 最大长度
  * required() 值是必填项, 不能为 undefined
  * pattern(正则表达式) 值必须符合正则表达式的规则
+ * integer() 整数
+ * email()
+ * not(joi.ref('选择同对象中键名')) 表示于同对象中指定键名值不能相同
+ * concat(变量) 合并验证规则
+ * dataUri() base64格式
  */
 
+// user regist login
 const username = joi.string().alphanum().min(1).max(10).required()
 const password = joi.string().pattern(/^[\S]{6,12}$/).required() //字符串 6-12位密码无空格 不为空
 
-const reg_login_schema = { 
+// user update
+const id = joi.number().integer().min(1).required()
+const nickname = joi.string().required()
+const email = joi.string().email().required()
+
+const avatar = joi.string().dataUri().required()
+
+const name = joi.string().required()
+const alias = joi.string().alphanum().required()
+
+const reg_login_schema = {
   body: {
     username,
     password
   }
 }
 
-export default reg_login_schema
+const update_userinfo_schema = {
+  body: {
+    nickname,
+    email
+  }
+}
+
+const change_password_schema = {
+  body: {
+    oldPwd: password,
+    newPwd: joi.not(joi.ref('oldPwd')).concat(password) // 于同级中oldPwd不一致，且合并验证规则
+  }
+}
+
+const update_avatar_schema = {
+  body: {
+    avatar
+  }
+}
+
+const add_cates_schema = {
+  body: {
+    name,
+    alias
+  }
+}
+
+const delete_cate_schema = {
+  params: {
+    id
+  }
+}
+
+export { reg_login_schema, update_userinfo_schema, change_password_schema, update_avatar_schema, add_cates_schema, delete_cate_schema }

@@ -1,5 +1,10 @@
 {
- 
-  "presets":["env"]
-
+  "presets": [
+    [
+      "env"
+    ]
+  ],
+  "plugins": [
+    "transform-object-rest-spread" // 解决无法识别拓展运算符babel插件
+  ]
 }
