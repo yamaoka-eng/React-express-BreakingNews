@@ -23,10 +23,14 @@ const id = joi.number().integer().min(1).required()
 const nickname = joi.string().required()
 const email = joi.string().email().required()
 
-const avatar = joi.string().dataUri().required()
+const imgReq = joi.string().dataUri().required()
+const img = joi.string().dataUri()
 
-const name = joi.string().required()
+const string = joi.string().required()
 const alias = joi.string().alphanum().required()
+
+const time = joi.string().pattern(/^[0-9\-]+$/).required()
+const state = joi.string().required()
 
 const reg_login_schema = {
   body: {
@@ -51,13 +55,13 @@ const change_password_schema = {
 
 const update_avatar_schema = {
   body: {
-    avatar
+    avatar: imgReq
   }
 }
 
 const add_cates_schema = {
   body: {
-    name,
+    string,
     alias
   }
 }
@@ -68,4 +72,31 @@ const delete_cate_schema = {
   }
 }
 
-export { reg_login_schema, update_userinfo_schema, change_password_schema, update_avatar_schema, add_cates_schema, delete_cate_schema }
+const article_schema = {
+  body: {
+    title: string,
+    content: string,
+    cover_img: img,
+    pub_date: time,
+    state,
+    cate_id: id,
+    // author_id: id
+  }
+}
+
+const delete_article_schema = {
+  params: {
+    id
+  }
+}
+
+export {
+  reg_login_schema,
+  update_userinfo_schema,
+  change_password_schema,
+  update_avatar_schema,
+  add_cates_schema,
+  delete_cate_schema,
+  article_schema,
+  delete_article_schema
+}

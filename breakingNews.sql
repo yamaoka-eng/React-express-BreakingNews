@@ -45,6 +45,36 @@ INSERT INTO `ev_articel_cate` VALUES (2,'历史','LiShi',0),(3,'搞笑','GaoXiao
 UNLOCK TABLES;
 
 --
+-- Table structure for table `ev_articles`
+--
+
+DROP TABLE IF EXISTS `ev_articles`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `ev_articles` (
+  `id` int NOT NULL AUTO_INCREMENT,
+  `title` varchar(255) NOT NULL,
+  `content` longtext NOT NULL,
+  `cover_img` varchar(255) DEFAULT NULL,
+  `pub_date` varchar(255) NOT NULL,
+  `state` varchar(255) NOT NULL,
+  `cate_id` int NOT NULL,
+  `author_id` int NOT NULL,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `id_UNIQUE` (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci COMMENT='文章表';
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `ev_articles`
+--
+
+LOCK TABLES `ev_articles` WRITE;
+/*!40000 ALTER TABLE `ev_articles` DISABLE KEYS */;
+/*!40000 ALTER TABLE `ev_articles` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
 -- Table structure for table `ev_users`
 --
 
@@ -83,4 +113,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2022-03-27  0:13:42
+-- Dump completed on 2022-03-27 23:18:13

@@ -35,3 +35,31 @@ export const deleteArtCates = (req, res) => {
     res.ok('cates delete succeed')
   })
 }
+
+const sqlAddArt = 'insert into ev_articles set ?'
+const sqlUpdArt = 'update ev_articles set ? where author_id=?'
+const sqlDelArt = 'delete from ev_articles where id=?'
+
+export const addArticle = (req, res) => {
+  db.query(sqlAddArt, { ...req.body, author_id: req.user.id }, (err, results) => {
+    if(err) return res.cc(err)
+    if(results.affectedRows !== 1) return res.cc('add article failed')
+    res.ok('add article succeed')
+  })
+}
+
+export const updateArticle = (req, res) => {
+  db.query(sqlUpdArt, [ req.body, req.user.id ], (err, results) => {
+    if(err) return res.cc(err)
+    if(results.affectedRows !== 1) return res.cc('update article failed')
+    res.ok('update article succeed')
+  })
+}
+
+export const deleteArticle = (req, res) => {
+  db.query(sqlDelArt, req.params.id, (err, results) => {
+    if(err) return res.cc(err)
+    if(results.affectedRows !== 1) return res.cc('delete article failed')
+    res.ok('delete article succeed')
+  })
+}
