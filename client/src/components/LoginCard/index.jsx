@@ -6,55 +6,59 @@ const LoginCard = ({ time }) => {
 
   const [ sildeIn, SetSildeIn ] = useState(false)
 
+  const [ sign, setSign ] = useState(false)
+
   useEffect(()=> setTimeout(() => {
     SetSildeIn(true)
   }, time), [])
 
   return (
-    <div className={`container ${sildeIn && 'slide-in-right'}`}>
-      <div className="form-container sign-up-container">
-        <form action="#">
-            <h1>Create Account</h1>
-            <div className="social-container">
-                <a href="#" className="social"><i className="fab fa-facebook-f"></i></a>
-                <a href="#" className="social"><i className="fab fa-google-plus-g"></i></a>
-                <a href="#" className="social"><i className="fab fa-linkedin-in"></i></a>
-            </div>
-            <span>or use your email for registration</span>
+    <div className={`
+      logn-card
+      ${sildeIn ? 'block' : 'hidden'}
+      ${sildeIn && 'md:animate-slide-in-right-y50 animate-slide-in-right block'}
+    `}>
+      <div className={`slide-container
+        ${sign ? 'md:translate-x-full md:translate-y-0 translate-y-full' : 'md:translate-x-0 md:translate-y-0 translate-y-0'}
+      `}>
+        <div className={`form z-10 opacity-0 transition-all duration-500 ${sign && 'logn-show'}`}>
+            <h1 className='logn-h1'>创建你的账户</h1>
+            <span>邮箱可选</span>
             <input type="text" placeholder="Name" />
             <input type="email" placeholder="Email" />
             <input type="password" placeholder="Password" />
-            <button>Sign Up</button>
-        </form>
-      </div>
-      <div className="form-container sign-in-container">
-        <form action="#">
-          <h1>Sign in</h1>
-          <div className="social-container">
-              <a href="#" className="social"><i className="fab fa-facebook-f"></i></a>
-              <a href="#" className="social"><i className="fab fa-google-plus-g"></i></a>
-              <a href="#" className="social"><i className="fab fa-linkedin-in"></i></a>
-          </div>
-          <span>or use your account</span>
-          <input type="email" placeholder="Email" />
+            <button>注册</button>
+        </div>
+        <div className='form z-0'>
+          <h1 className='logn-h1'>Sign UP</h1>
+          <span>请输入您的账户</span>
+          <input type="username" placeholder="Username" />
           <input type="password" placeholder="Password" />
-          <a href="#">Forgot your password?</a>
-          <button>Sign In</button>
-        </form>
+          <a href="#">忘记密码?</a>
+          <button>登录</button>
+        </div>
       </div>
-      <div className="overlay-container">
-        <div className="overlay">
-          <div className="overlay-panel overlay-left">
-              <h1>Welcome Back!</h1>
-              <p>
-                  To keep connected with us please login with your personal info
+      <div className={`slide-container z-20
+        ${sign ? 'md:translate-x-0 md:translate-y-0 translate-y-0' : 'md:translate-x-full md:translate-y-0 translate-y-full'}
+      `}>
+        <div className={`slide-box-container
+          ${sign ? 'md:translate-x-1/2 md:translate-y-0 translate-y-1/2' : 'md:translate-x-0 md:translate-y-0 translate-y-0'}
+        `}>
+          <div className={`slide-box
+            ${sign ? 'md:translate-x-0 md:translate-y-0 translate-y-0' : 'md:-translate-x-1/3 md:translate-y-0 -translate-y-1/3'}
+          `}>
+              <h1 className='logn-h1'>Welcome Back!</h1>
+              <p className='my-8'>
+                  已有账户请点击下方按钮
               </p>
-              <button className="ghost" id="signIn">Sign In</button>
+              <button className="transparency-btn" onClick={()=>setSign(false)}>去登录</button>
           </div>
-          <div className="overlay-panel overlay-right">
-              <h1>Hello, Friend!</h1>
-              <p>Enter your personal details and start journey with us</p>
-              <button className="ghost" id="signUp">Sign Up</button>
+          <div className={`slide-box
+            ${sign ? 'md:translate-x-1/3 md:translate-y-0 translate-y-1/3' : 'md:translate-x-0 md:translate-y-0 translate-y-0' }
+          `}>
+              <h1 className='logn-h1'>Hello, Friend!</h1>
+              <p className='my-8'>如没有账户点击下方按钮注册</p>
+              <button className="transparency-btn" onClick={()=>setSign(true)}>去注册</button>
           </div>
         </div>
       </div>

@@ -6,7 +6,6 @@ html, body, #root, .App {
     sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  color: #ccc;
   overflow-x: hidden;
 }
 
