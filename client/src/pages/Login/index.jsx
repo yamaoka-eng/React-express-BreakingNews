@@ -5,7 +5,7 @@ import { PrestrainImg } from '../../utils'
 
 const Login = () => {
 
-  const time = 2500
+  const time = 1600
 
   return (
     <div className='login'>

@@ -22,11 +22,11 @@ app.use((req,res,next)=>{
   next()
 })
 
-app.use(expressJWT({ secret: tokenKey , algorithms: ['HS256'] }).unless({ path: [/^\/api/] })) // 配置验证token的中间件并指定api接口不需要身份验证
+app.use(expressJWT({ secret: tokenKey , algorithms: ['HS256'] }).unless({ path: [/^\/api\/user/] })) // 配置验证token的中间件并指定api接口不需要身份验证
 
-app.use('/api', userRouter)
-app.use('/my', userinfoRouter)
-app.use('/my/article', artcateRouter)
+app.use('/api/user', userRouter)
+app.use('/api/my', userinfoRouter)
+app.use('/api/my/article', artcateRouter)
 
 app.use((err, req, res, next)=>{
   if (err instanceof joi.ValidationError) return res.cc(err) // 判断错误对象是否为joi校验规则错误对象

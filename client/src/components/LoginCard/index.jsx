@@ -1,5 +1,6 @@
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useRef } from 'react'
 
+import { postLogin } from '../../service/user' 
 import './index.scss'
 
 const LoginCard = ({ time }) => {
@@ -7,6 +8,21 @@ const LoginCard = ({ time }) => {
   const [ sildeIn, SetSildeIn ] = useState(false)
 
   const [ sign, setSign ] = useState(false)
+
+  const loginEl = useRef(null)
+
+  const registerEl = useRef(null)
+
+  const login = () => {
+    const username = loginEl.current['0'].value
+    const password = loginEl.current['1'].value
+    console.log(username, password)
+    postLogin(username,password).then(res => console.log(res))
+  }
+
+  const register = () => {
+    console.log(registerEl)
+  }
 
   useEffect(()=> setTimeout(() => {
     SetSildeIn(true)
@@ -21,22 +37,24 @@ const LoginCard = ({ time }) => {
       <div className={`slide-container
         ${sign ? 'md:translate-x-full md:translate-y-0 translate-y-full' : 'md:translate-x-0 md:translate-y-0 translate-y-0'}
       `}>
-        <div className={`form z-10 opacity-0 transition-all duration-500 ${sign && 'logn-show'}`}>
+        <form className={`slide-container-form transition-all duration-500
+          ${sign ? 'logn-show z-20 opacity-1' : 'z-0 opacity-0'}
+        `} ref={registerEl}>
             <h1 className='logn-h1'>创建你的账户</h1>
             <span>邮箱可选</span>
-            <input type="text" placeholder="Name" />
-            <input type="email" placeholder="Email" />
-            <input type="password" placeholder="Password" />
-            <button>注册</button>
-        </div>
-        <div className='form z-0'>
+            <input className='slide-ct-form-input' type="text" placeholder="Name" />
+            <input className='slide-ct-form-input' type="email" placeholder="Email" />
+            <input className='slide-ct-form-input' type="password" placeholder="Password" />
+            <div className='form-btn' onClick={register}>注册</div>
+        </form>
+        <form className='slide-container-form z-10' ref={loginEl}>
           <h1 className='logn-h1'>Sign UP</h1>
           <span>请输入您的账户</span>
-          <input type="username" placeholder="Username" />
-          <input type="password" placeholder="Password" />
+          <input className='slide-ct-form-input' type="username" placeholder="Username" />
+          <input className='slide-ct-form-input' type="password" placeholder="Password" />
           <a href="#">忘记密码?</a>
-          <button>登录</button>
-        </div>
+          <div className='form-btn' onClick={login}>登录</div>
+        </form>
       </div>
       <div className={`slide-container z-20
         ${sign ? 'md:translate-x-0 md:translate-y-0 translate-y-0' : 'md:translate-x-full md:translate-y-0 translate-y-full'}
