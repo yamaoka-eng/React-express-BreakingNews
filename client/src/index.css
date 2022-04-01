@@ -19,6 +19,13 @@ ul {
   list-style: none;
 }
 
+#toastify {
+  position: absolute;
+  top: 0;
+  right: 0;
+  z-index: 99;
+}
+
 .App {
   background-color: #0f0e13;
   background-image: 

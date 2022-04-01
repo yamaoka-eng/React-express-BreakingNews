@@ -8,12 +8,12 @@ const sqlQueStr = 'select * from ev_users where username=?' // 定义 sql 用户
 const sqlInsStr = 'insert into ev_users set ?' // 定义 sql 插入语句
 
 const regUser = (req, res) => {
-  var { username, password } = req.body
+  var { username, password, email } = req.body
   db.query(sqlQueStr, username, (err, results)=>{
     if (err) return res.cc(err) // 检查sql语句是否报错
     if (results.length > 0) return res.cc('the user name already exisits') // 检查是否有重名
     password = bcryptjs.hashSync(password, 10) // 对用户密码进行加密
-    db.query(sqlInsStr, { username, password }, (err, results)=>{
+    db.query(sqlInsStr, { username, password, email }, (err, results)=>{
       if(err) return res.cc(err)
       if(results.affectedRows !== 1) return res.cc('register is fail, please try again later') // 判断影响行数
       return res.ok('register is succeed')

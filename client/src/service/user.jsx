@@ -11,3 +11,16 @@ export const postLogin = (username, password) => request({
     password
   }
 })
+
+export const postRegister = (username, email ,password) => request({
+  url: '/user/register',
+  method: 'post',
+  headers: {
+    "Content-Type": "application/x-www-form-urlencoded"
+  },
+  data: {
+    username,
+    email,
+    pasword
+  }
+})

@@ -1,27 +1,46 @@
 import { useState, useEffect, useRef } from 'react'
+import { useNavigate } from 'react-router-dom'
 
+import Message from '../Message'
 import { postLogin } from '../../service/user' 
 import './index.scss'
 
 const LoginCard = ({ time }) => {
 
   const [ sildeIn, SetSildeIn ] = useState(false)
-
   const [ sign, setSign ] = useState(false)
 
   const loginEl = useRef(null)
-
   const registerEl = useRef(null)
 
+  const usernameReg = /^(?!\D+$)(?![^a-zA-Z]+$)\S{1,10}$/
+
   const login = () => {
-    const username = loginEl.current['0'].value
-    const password = loginEl.current['1'].value
-    console.log(username, password)
-    postLogin(username,password).then(res => console.log(res))
+    const username = loginEl.current['0'].value.trim()
+    const password = loginEl.current['1'].value.trim()
+
+    if (!username) return Message.onError('请输入用户名')
+    if (!password) return Message.onError('请输入密码')
+    if (username.length > 10) return Message.onError('用户名长度不应超过10位')
+    if (!usernameReg.test(username)) return Message.onError('请勿输入特殊标点符号')
+
+    postLogin(username,password).then(res => {
+      if (res.data.status === 0) {
+        localStorage.setItem('token',res.data.token)
+        Message.onSuccess('登录成功')
+      } else {
+        Message.onError('用户名或密码错误')
+      }
+    })
   }
 
   const register = () => {
-    console.log(registerEl)
+    const username = registerEl.current['0'].value.trim()
+    const email = registerEl.current['1'].value.trim()
+    const password = registerEl.current['2'].value.trim()
+
+    if (!username) return Message.onError('请输入用户名')
+    if (!password) return Message.onError('请输入密码')
   }
 
   useEffect(()=> setTimeout(() => {
