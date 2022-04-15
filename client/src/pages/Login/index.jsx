@@ -1,7 +1,6 @@
 import React from 'react'
 import { ShakeTitile, LoginCard } from '../../components'
-
-import { PrestrainImg } from '../../utils'
+import './index.scss'
 
 const Login = () => {
 

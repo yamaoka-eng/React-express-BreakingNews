@@ -1,4 +1,5 @@
 import { lazy, Suspense, useState, useEffect } from "react"
+import { Navigate } from "react-router-dom"
 import styles from './utils.module.scss'
 
 export const getImage = (imgUrl) => new URL(`/src/assets/images/${imgUrl}`, import.meta.url).href
@@ -26,4 +27,14 @@ export const lazyLoad = component => {
       <LazyComponent />
     </Suspense>
   )
+}
+
+export const routerIntercept = Component => {
+
+  let authenticate = ()=> {
+    const token = localStorage.getItem("token")
+    return token ? true : false
+  }
+
+  return (authenticate() ? Component : <Navigate to="/login"/> )
 }

@@ -11,11 +11,11 @@ const regUser = (req, res) => {
   var { username, password, email } = req.body
   db.query(sqlQueStr, username, (err, results)=>{
     if (err) return res.cc(err) // 检查sql语句是否报错
-    if (results.length > 0) return res.cc('the user name already exisits') // 检查是否有重名
+    if (results.length > 0) return res.cc(1, 'the user name already exisits') // 检查是否有重名
     password = bcryptjs.hashSync(password, 10) // 对用户密码进行加密
     db.query(sqlInsStr, { username, password, email }, (err, results)=>{
       if(err) return res.cc(err)
-      if(results.affectedRows !== 1) return res.cc('register is fail, please try again later') // 判断影响行数
+      if(results.affectedRows !== 1) return res.cc(2, 'register is fail, please try again later') // 判断影响行数
       return res.ok('register is succeed')
     })
   })
@@ -25,8 +25,8 @@ const login = (req, res)=>{
   var { username, password } = req.body 
   db.query(sqlQueStr, username, (err, results)=>{
     if (err) return res.cc(err)
-    if (results.length === 0) return res.cc('the username does not exist')
-    if (!bcryptjs.compareSync(password, results[0].password)) return res.cc('password is wrong') // 使用加密包对请求中的密码和数据库查询到的密码进行对比
+    if (results.length === 0) return res.cc(1, 'the username does not exist')
+    if (!bcryptjs.compareSync(password, results[0].password)) return res.cc(2, 'password is wrong') // 使用加密包对请求中的密码和数据库查询到的密码进行对比
     const user = { ...results[0], password: '', user_pic: '' }
     const tokenStr = jsonwebtoken.sign(user, tokenKey, { expiresIn })
     res.ok('login is succeed', {token: 'Bearer ' + tokenStr})

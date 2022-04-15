@@ -21,7 +21,7 @@ const password = joi.string().pattern(/^[\S]{6,12}$/).required() //字符串 6-1
 // user update
 const id = joi.number().integer().min(1).required()
 const nickname = joi.string().required()
-const email = joi.string().email().required()
+const email = joi.string().email()
 
 const imgReq = joi.string().dataUri().required()
 const img = joi.string().dataUri()
@@ -35,7 +35,8 @@ const state = joi.string().required()
 const reg_login_schema = {
   body: {
     username,
-    password
+    password,
+    email
   }
 }
 

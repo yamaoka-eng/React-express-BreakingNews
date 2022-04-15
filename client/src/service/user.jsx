@@ -21,6 +21,6 @@ export const postRegister = (username, email ,password) => request({
   data: {
     username,
     email,
-    pasword
+    password
   }
 })

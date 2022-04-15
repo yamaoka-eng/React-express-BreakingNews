@@ -17,7 +17,7 @@ app.use((req,res,next)=>{console.log('服务器被访问');next()})
 app.use(cors()) // 配置跨域中间件
 app.use(express.urlencoded({ extended: false })) // 配置解析application/x-www-form-urlencoded 格式的表单数据中间件
 app.use((req,res,next)=>{
-  res.cc = (err) => res.send({ status: 1, msg: (err instanceof Error ? err.message : err) }) //在res对象挂载封装响应错误属性
+  res.cc = (status = 1, err) => res.send({ status, msg: (err instanceof Error ? err.message : err) }) //在res对象挂载封装响应错误属性
   res.ok = (msg, data) => res.send({ status: 0, msg, ...data}) //挂载成功响应属性
   next()
 })

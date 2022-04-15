@@ -2,7 +2,7 @@ import { useState, useEffect, useRef } from 'react'
 import { useNavigate } from 'react-router-dom'
 
 import Message from '../Message'
-import { postLogin } from '../../service/user' 
+import { postLogin, postRegister } from '../../service/user' 
 import './index.scss'
 
 const LoginCard = ({ time }) => {
@@ -13,7 +13,10 @@ const LoginCard = ({ time }) => {
   const loginEl = useRef(null)
   const registerEl = useRef(null)
 
-  const usernameReg = /^(?!\D+$)(?![^a-zA-Z]+$)\S{1,10}$/
+  const history = useNavigate()
+
+  const usernameReg = /^(?!\D+$)(?![^0-9a-zA-Z]+$)/
+  const emailReg = /^[A-Za-z0-9\u4e00-\u9fa5]+@[a-zA-Z0-9_-]+(\.[a-zA-Z0-9_-]+)+$/
 
   const login = () => {
     const username = loginEl.current['0'].value.trim()
@@ -22,14 +25,21 @@ const LoginCard = ({ time }) => {
     if (!username) return Message.onError('请输入用户名')
     if (!password) return Message.onError('请输入密码')
     if (username.length > 10) return Message.onError('用户名长度不应超过10位')
-    if (!usernameReg.test(username)) return Message.onError('请勿输入特殊标点符号')
+    if (password.length < 6 || password.length > 12) return Message.onError('密码应在6-12位之间')
+    if (!usernameReg.test(username)) return Message.onError('用户名中请勿输入特殊标点符号')
 
-    postLogin(username,password).then(res => {
-      if (res.data.status === 0) {
+    postLogin(username, password).then(res => {
+      const status = res.data.status
+      if (status === 0) {
         localStorage.setItem('token',res.data.token)
+        history('/home')
         Message.onSuccess('登录成功')
+      } else if (status === 1) {
+        Message.onError('用户名不存在')
+      } else if (status === 2) {
+        Message.onError('密码错误')
       } else {
-        Message.onError('用户名或密码错误')
+        Message.onError('登录失败')
       }
     })
   }
@@ -41,6 +51,21 @@ const LoginCard = ({ time }) => {
 
     if (!username) return Message.onError('请输入用户名')
     if (!password) return Message.onError('请输入密码')
+    if (username.length > 10) return Message.onError('用户名长度不应超过10位')
+    if (password.length < 6 || password.length > 12) return Message.onError('密码应在6-12位之间')
+    if (email) if (!emailReg.test(email)) return Message.onError('请输入正确的邮箱')
+
+    postRegister(username, email, password).then(res => {
+      const status = res.data.status
+      if (status === 0) {
+        Message.onSuccess('注册成功')
+      } else if (status === 1) {
+        if (status === 1)  return Message.onError('用户名已存在')
+      } else {
+        Message.onError('注册失败')
+      }
+    })
+
   }
 
   useEffect(()=> setTimeout(() => {
