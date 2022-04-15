@@ -1,5 +1,6 @@
 import { lazy, Suspense, useState, useEffect } from "react"
 import { Navigate } from "react-router-dom"
+import Message from "../components/Message"
 import styles from './utils.module.scss'
 
 export const getImage = (imgUrl) => new URL(`/src/assets/images/${imgUrl}`, import.meta.url).href
@@ -29,12 +30,13 @@ export const lazyLoad = component => {
   )
 }
 
-export const routerIntercept = Component => {
+export const RouterIntercept = ({ Component }) => {
 
-  let authenticate = ()=> {
-    const token = localStorage.getItem("token")
-    return token ? true : false
-  }
+  const token = localStorage.getItem("token")
 
-  return (authenticate() ? Component : <Navigate to="/login"/> )
+  useEffect(()=>{
+    if (!token) Message.onInfo('请先登录')
+  })
+
+  return (token ? Component : <Navigate to="/login"/> )
 }
